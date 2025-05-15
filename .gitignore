@@ -1,0 +1,30 @@
+# macOS / system files
+.DS_Store
+
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+
+# IDE settings
+.vscode/
+.idea/
+
+# Logs and outputs
+*.log
+*.out
+
+# Data directories — you will re-include small samples manually later
+ssl-logs/
+/data/
+
+# Optional: add wildcard to ignore large data artifacts
+*.parquet
+*.csv
+*.json
+*.pickle
+
+# Virtual environments
+.env
+.venv
+venv/
+env/
