@@ -22,7 +22,7 @@ def parse_raw(input_path: str, output_path: str) -> pd.DataFrame:
 def parse_request(df: pd.DataFrame, output_path = None) -> pd.DataFrame:
     df = parse_request_column(df)
     print_request_parse_summary(df)
-    df.drop(columns=["request", "query_str", "request_error", "query_error"], inplace=True)
+    df.drop(columns=["request", "request_error"], inplace=True)
 
     if output_path:
         save_parquet(df, output_path)
