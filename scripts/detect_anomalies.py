@@ -18,7 +18,7 @@ def status_anomalies(df, profile, rare_threshold=None) -> pd.DataFrame:
 
     return df
 
-eval_path = "../data/parsed/all_ssl-access-url-whitelisted-eval-80.parquet"
+eval_path = "../data/split/whitelisted-80-20/all_ssl-access-url-whitelisted-eval-80.parquet"
 profile_path = "../data/profiles/status_profile_v1.json"
 output_path = "../data/output/status_anomaly_v1.csv"
 
