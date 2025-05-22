@@ -13,9 +13,9 @@ __pycache__/
 *.log
 *.out
 
-# Data directories — you will re-include small samples manually later
+# Data directories
 ssl-logs/
-/data/
+data/
 
 # Optional: add wildcard to ignore large data artifacts
 *.parquet
@@ -28,3 +28,6 @@ ssl-logs/
 .venv
 venv/
 env/
+
+#old code folder
+fyp/
