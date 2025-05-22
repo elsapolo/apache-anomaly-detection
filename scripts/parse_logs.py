@@ -1,7 +1,6 @@
-import pandas as pd
 import json
 
-from pandas import DataFrame
+import pandas as pd
 
 from utils.log_loading import parse_apache_log_file, save_parquet
 from utils.log_summary import print_request_parse_summary, print_whitelist_summary
@@ -22,7 +21,11 @@ def parse_raw(input_path: str, output_path: str) -> pd.DataFrame:
 def parse_request(df: pd.DataFrame, output_path = None) -> pd.DataFrame:
     df = parse_request_column(df)
     print_request_parse_summary(df)
-    df.drop(columns=["request", "request_error"], inplace=True)
+    df["query_dict_str"] = df["query_dict"].apply(
+        lambda d: json.dumps(d) if isinstance(d, dict) else None
+    )
+
+    df.drop(columns=["request", "request_error", "query_dict"], inplace=True)
 
     if output_path:
         save_parquet(df, output_path)
@@ -49,3 +52,5 @@ whitelisted_output_path = "../data/parsed/all_ssl_access-url-whitelisted.parquet
 df = pd.read_parquet(parsed_output_path)
 df = parse_request(df, request_parsed_output_path)
 df = whitelist_parsed(df, whitelisted_output_path)
+
+#LAST PARSED AND WHITELISTED 22/05/2025 5pm -> after fixing broken query saving
