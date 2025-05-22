@@ -64,3 +64,19 @@ def print_whitelist_summary(df):
     print(f"Total records:              {total:,}")
     print(f"✅ Whitelisted:     {whitelisted:,}")
     print(f"❌ Not whitelisted parse failures:  {not_whitelisted:,}")
+
+def print_status_anomaly_summary(df):
+    num_total = len(df)
+    num_anomalies = df["status_anomaly"].sum()
+    breakdown = df["status_anomaly_reason"].value_counts()
+
+    print("\n✅ Status anomaly detection complete.")
+    print(f"🔍 Total rows evaluated:    {num_total:,}")
+    print(f"⚠️  Total anomalies found:   {num_anomalies:,}")
+    print("\n📊 Breakdown by reason:")
+    for reason, count in breakdown.items():
+        print(f" - {reason:<20}: {count:,}")
+
+    print("\n🔎 Example anomalies:")
+    print(df.loc[df["status_anomaly"], ["method", "path", "status", "status_anomaly_reason"]].head())
+
