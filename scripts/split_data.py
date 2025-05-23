@@ -12,8 +12,8 @@ def split_data(input_path, output_train, output_eval, ratio=0.8):
 
 
 input_path = "../data/parsed/all_ssl_access-url-whitelisted.parquet"
-output_train = "../data/parsed/all_ssl-access-url-whitelisted-train-80.parquet"
-output_eval = "../data/parsed/all_ssl-access-url-whitelisted-eval-80.parquet"
+output_train = "../data/split/whitelisted-80-20/all_ssl-access-url-whitelisted-train-80.parquet"
+output_eval = "../data/split/whitelisted-80-20/all_ssl-access-url-whitelisted-eval-80.parquet"
 
 split_data(input_path, output_train, output_eval)
 
