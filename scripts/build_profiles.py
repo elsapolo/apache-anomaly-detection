@@ -3,7 +3,7 @@ import json
 
 from profiles.query_structure_profile import build_query_structure_profile
 from profiles.status_profile import build_status_profile
-from utils.parsing import parse_query_dict_string
+from utils.parsing import parse_query_dict_string_df
 
 
 #TODO: refactor to eliminate duplication
@@ -44,7 +44,7 @@ status_profile_output_path = "../data/profiles/status_profile_v1.json"
 query_structure_profile_output_path = "../data/profiles/query_structure_profile_v1.json"
 
 df_train = pd.read_parquet(input_path)
-df_train["query_dict"] = df_train["query_dict_str"].apply(parse_query_dict_string)
+df_train = parse_query_dict_string_df(df_train)
 #status_profile(df_train, status_profile_output_path) #Last built 23/05/2025 11:37
 #query_structure_profile(df_train, query_structure_profile_output_path) #Last built 23/05/2025 11:37
 

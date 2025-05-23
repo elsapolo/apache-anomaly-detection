@@ -80,3 +80,20 @@ def print_status_anomaly_summary(df):
     print("\n🔎 Example anomalies:")
     print(df.loc[df["status_anomaly"], ["method", "path", "status", "status_anomaly_reason"]].head())
 
+
+def print_query_structure_anomaly_summary(df):
+    num_total = len(df)
+    num_anomalies = df["query_structure_anomaly"].sum()
+    breakdown = df["query_structure_anomaly_reason"].value_counts()
+
+    print("\n✅ Query structure anomaly detection complete.")
+    print(f"🔍 Total rows evaluated:    {num_total:,}")
+    print(f"⚠️  Total anomalies found:   {num_anomalies:,}")
+    print("\n📊 Breakdown by reason:")
+    for reason, count in breakdown.items():
+        print(f" - {reason:<25}: {count:,}")
+
+    print("\n🔎 Example anomalies:")
+    print(df.loc[df["query_structure_anomaly"], [
+        "method", "path", "query_keys", "query_structure_anomaly_reason"
+    ]].head())

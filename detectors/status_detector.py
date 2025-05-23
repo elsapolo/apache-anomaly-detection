@@ -9,8 +9,8 @@ def detect_status_anomalies(df: pd.DataFrame, profile: dict, rare_threshold: flo
     """
 
     def get_reason(row):
-        key = f"{row['method']} {row['path']}"
-        status = str(row['status'])
+        key = (row['method'], row['path'])
+        status = row['status']
 
         if key not in profile:
             return "unseen_path"

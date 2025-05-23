@@ -1,5 +1,7 @@
 import pandas as pd
 
+from utils.parsing import extract_query_keys
+
 
 def detect_query_structure_anomalies(df: pd.DataFrame, profile: dict, rare_threshold: float = None) -> pd.DataFrame:
     """
@@ -10,30 +12,23 @@ def detect_query_structure_anomalies(df: pd.DataFrame, profile: dict, rare_thres
         - query_structure_anomaly_reason (str)
     """
 
-    # Count how often each structure appears in eval set
     df = df.copy()
-    df["query_keys"] = df["query_dict_str"].apply(
-        lambda s: tuple(sorted(eval(s).keys())) if isinstance(s, str) and s != "null" else tuple()
-    )
-
-    # Count frequencies in eval set for later rarity check
-    structure_counts = df.groupby(["method", "path"])["query_keys"].value_counts(normalize=True)
+    df["query_keys"] = df["query_dict_str"].apply(extract_query_keys)
 
     def get_reason(row):
-        key = f"{row['method']} {row['path']}"
+        key = (row['method'],row['path'])
         structure = row["query_keys"]
 
         if key not in profile:
             return "unseen_path"
 
-        known_structures = [tuple(sorted(keys)) for keys in profile[key]]
+        known_structures = profile[key]
+
         if structure not in known_structures:
             return "unseen_structure"
 
-        if rare_threshold is not None:
-            freq = structure_counts.get((row["method"], row["path"], structure), 0)
-            if freq < rare_threshold:
-                return f"(<{rare_threshold:.2%})"
+        if rare_threshold is not None and known_structures[structure] < rare_threshold:
+            return f"rare_structure (<{rare_threshold:.2%})"
 
         return None
 

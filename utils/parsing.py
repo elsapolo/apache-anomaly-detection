@@ -1,5 +1,8 @@
 import json
 
+import pandas as pd
+
+
 def parse_query_dict_string(s: str) -> dict:
     """
     Safely parses a query_dict_str column (JSON-encoded string) into a Python dict.
@@ -21,3 +24,16 @@ def extract_query_keys(query_dict: dict) -> tuple:
     if isinstance(query_dict, dict):
         return tuple(sorted(query_dict.keys()))
     return tuple()
+
+def parse_query_dict_string_df(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Adds a 'query_dict' column to the DataFrame by parsing the JSON-formatted
+    strings in the 'query_dict_str' column.
+    """
+    if "query_dict_str" not in df.columns:
+        raise KeyError("Missing required column: 'query_dict_str'")
+
+    df["query_dict"] = df["query_dict_str"].apply(parse_query_dict_string)
+    return df
+
+
