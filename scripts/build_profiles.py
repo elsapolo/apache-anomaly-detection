@@ -3,6 +3,8 @@ import json
 
 from profiles.query_structure_profile import build_query_structure_profile
 from profiles.status_profile import build_status_profile
+from utils.parsing import parse_query_dict_string
+
 
 #TODO: refactor to eliminate duplication
 
@@ -16,7 +18,7 @@ def status_profile(df, output):
     }
 
     print(f"💾 Saving profile to {output}")
-    with open(profile_output_path, "w") as f:
+    with open(output, "w") as f:
         json.dump(serializable_profile, f, indent=2)
 
 def query_structure_profile(df, output):
@@ -25,20 +27,24 @@ def query_structure_profile(df, output):
 
     # Convert to serializable form
     serializable_profile = {
-        f"{method} {path}": [list(s) for s in sorted(structures)]
-        for (method, path), structures in profile.items()
+        f"{method} {path}": {
+            json.dumps(list(query_keys)): freq
+            for query_keys, freq in inner.items()
+        }
+        for (method, path), inner in profile.items()
     }
 
     print(f"💾 Saving profile to {output}")
-    with open(profile_output_path, "w") as f:
+    with open(output, "w") as f:
         json.dump(serializable_profile, f, indent=2)
 
 
 input_path = "../data/split/whitelisted-80-20/all_ssl-access-url-whitelisted-train-80.parquet"
-profile_output_path = "../data/profiles/status_profile_v1.json"
-query_structure_output_path = "../data/profiles/query_structure_profile_v1.json"
+status_profile_output_path = "../data/profiles/status_profile_v1.json"
+query_structure_profile_output_path = "../data/profiles/query_structure_profile_v1.json"
 
 df_train = pd.read_parquet(input_path)
-#status_profile(df_train, profile_output_path) #Last built 22/05/2025 1pm
-query_structure_profile(df_train, profile_output_path)
+df_train["query_dict"] = df_train["query_dict_str"].apply(parse_query_dict_string)
+#status_profile(df_train, status_profile_output_path) #Last built 23/05/2025 11:37
+#query_structure_profile(df_train, query_structure_profile_output_path) #Last built 23/05/2025 11:37
 
