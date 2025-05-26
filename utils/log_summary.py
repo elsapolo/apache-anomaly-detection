@@ -97,3 +97,21 @@ def print_query_structure_anomaly_summary(df):
     print(df.loc[df["query_structure_anomaly"], [
         "method", "path", "query_keys", "query_structure_anomaly_reason"
     ]].head())
+
+def print_response_anomaly_summary(df):
+    total = len(df)
+    anomalies = df["response_size_anomaly"].sum()
+    reasons = df["response_size_anomaly_reason"].value_counts()
+
+    print("\n✅ Response size anomaly detection complete.")
+    print(f"🔍 Total rows evaluated:    {total:,}")
+    print(f"⚠️  Total anomalies found:   {anomalies:,}")
+    print("\n📊 Breakdown by reason:")
+    for reason, count in reasons.items():
+        print(f" - {reason:<20}: {count:,}")
+
+    print("\n🔎 Example anomalies:")
+    print(df[df["response_size_anomaly"]][
+        ["method", "path", "status", "response_size", "response_size_anomaly_reason", "response_size_anomaly_score"]
+    ].head())
+

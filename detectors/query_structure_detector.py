@@ -12,9 +12,6 @@ def detect_query_structure_anomalies(df: pd.DataFrame, profile: dict, rare_thres
         - query_structure_anomaly_reason (str)
     """
 
-    df = df.copy()
-    df["query_keys"] = df["query_dict_str"].apply(extract_query_keys)
-
     def get_reason(row):
         key = (row['method'],row['path'])
         structure = row["query_keys"]

@@ -1,4 +1,5 @@
 import json
+import ast
 
 def load_status_profile(path: str) -> dict:
     with open(path, "r") as f:
@@ -22,5 +23,18 @@ def load_query_structure_profile(path: str) -> dict:
             tuple(json.loads(key_str)): freq for key_str, freq in inner.items()
         }
         profile[(method, path)] = deserialized
+
+    return profile
+
+def load_response_profile(path: str) -> dict:
+    with open(path, "r") as f:
+        raw_profile = json.load(f)
+
+    profile = {}
+    #TODO: check this
+    for key_str, stats in raw_profile.items():
+        # key_str is something like "('GET', '/foo', ('q',), 200)"
+        method, path, query_keys, status = ast.literal_eval(key_str)
+        profile[(method, path, query_keys, status)] = stats
 
     return profile

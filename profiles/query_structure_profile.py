@@ -14,10 +14,6 @@ def build_query_structure_profile(df: pd.DataFrame, min_count: int = 10) -> dict
         dict[(method,path)] -> dict[(query_param1,query_param2,...)] -> float (proportion)
     """
 
-    df = df.copy()
-
-    df["query_keys"] = df["query_dict"].apply(extract_query_keys)
-
     counts = df.groupby(["method", "path"]).size()
     valid = counts[counts >= min_count].index
 
