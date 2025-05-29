@@ -31,3 +31,7 @@ env/
 
 #old code folder
 fyp/
+
+#evaluation folders
+coraza/
+wazuh-docker/
